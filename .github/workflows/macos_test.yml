@@ -1,0 +1,37 @@
+name: macOS
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build-examples:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout ViennaHRLE
+        uses: actions/checkout@v3
+
+      - name: Configure CMake
+        run: cmake -B ./build \
+          -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+          -D VIENNAHRLE_BUILD_TESTS=ON \
+          -D OpenMP_C_FLAGS="-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include" \
+          -D OpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include" \
+          -D OpenMP_C_LIB_NAMES="omp" \
+          -D OpenMP_CXX_LIB_NAMES="omp" \
+          -D OpenMP_omp_LIBRARY="$(brew --prefix libomp)/lib/libomp.a"
+
+      - name: Build Tests
+        run: cmake --build ./build
+
+      - name: Run Tests
+        working-directory: ${{github.workspace}}/build
+        # Run all tests that are not labeled as benchmark
+        run: ctest -LE "^benchmark$" -j 2 --output-on-failure --timeout 300 -C ${{env.BUILD_TYPE}}

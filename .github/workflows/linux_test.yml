@@ -1,0 +1,30 @@
+name: Linux
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build-examples:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ViennaHRLE
+        uses: actions/checkout@v3
+
+      - name: Configure CMake
+        run: cmake -B ./build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DVIENNAHRLE_BUILD_TESTS=ON
+
+      - name: Build Tests
+        run: cmake --build ./build
+
+      - name: Run Tests
+        working-directory: ${{github.workspace}}/build
+        # Run all tests that are not labeled as benchmark
+        run: ctest -LE "^benchmark$" -j 2 --output-on-failure --timeout 300 -C ${{env.BUILD_TYPE}}
