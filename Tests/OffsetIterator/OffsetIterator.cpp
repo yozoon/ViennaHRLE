@@ -1,5 +1,7 @@
+#include <array>
 #include <fstream>
 #include <iostream>
+#include <omp.h>
 
 #include <hrleDenseIterator.hpp>
 #include <hrleDomain.hpp>
@@ -9,7 +11,7 @@
 #include <hrleSparseIterator.hpp>
 #include <hrleTestAsserts.hpp>
 
-constexpr int D = 2;
+inline constexpr int D = 2;
 using DataType = char;
 using VectorType = hrleVectorType<hrleIndexType, D>;
 
@@ -31,7 +33,7 @@ void fillDomain(hrleDomain<DataType, D> &domain) {
   std::vector<std::pair<hrleVectorType<hrleIndexType, D>, char>> pointData;
   constexpr double radius = 12.;
   constexpr double radius2 = radius * radius;
-  constexpr int circleExtent = radius + 2;
+  constexpr int circleExtent = static_cast<int>(radius) + 2;
 
   auto &grid = domain.getGrid();
   auto gridMin = grid.getMinGridPoint();
