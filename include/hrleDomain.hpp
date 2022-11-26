@@ -826,7 +826,7 @@ public:
               unsigned long long relativeId = 0;
               stream.read(reinterpret_cast<char *>(&relativeId), bytesPerIndex);
               definedId += relativeId;
-              runTypes[counter] = definedId;
+              runTypes[counter] = static_convert<hrleSizeType>(definedId);
             }
             ++counter;
           }
