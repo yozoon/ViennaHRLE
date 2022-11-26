@@ -71,7 +71,7 @@ private:
 
   hrleIndexType readGridBoundary(std::istream &stream, char gridBoundaryBytes) {
     char number[sizeof(hrleIndexType)] = {};
-    for (unsigned i = 0; i < gridBoundaryBytes; ++i)
+    for (unsigned i = 0; i < static_cast<unsigned>(gridBoundaryBytes); ++i)
       stream.read(number + i, 1);
 
     if (number[gridBoundaryBytes - 1] >> 7) {
