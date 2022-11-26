@@ -1,5 +1,7 @@
+#include <array>
 #include <fstream>
 #include <iostream>
+#include <omp.h>
 
 #include <hrleDomain.hpp>
 #include <hrleFillDomainFromPointList.hpp>
