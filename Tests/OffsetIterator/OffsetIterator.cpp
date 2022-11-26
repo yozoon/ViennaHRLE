@@ -11,7 +11,7 @@
 #include <hrleSparseIterator.hpp>
 #include <hrleTestAsserts.hpp>
 
-inline constexpr int D = 2;
+constexpr int D = 2;
 using DataType = char;
 using VectorType = hrleVectorType<hrleIndexType, D>;
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdexcept>
+#include <string>
+
 // Fix for builds on Windows since MSVC does not expose __PRETTY_FUNCTION__
 #ifdef _MSC_VER
 #define __PRETTY_FUNCTION__ __FUNCSIG__
