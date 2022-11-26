@@ -76,7 +76,7 @@ private:
 
     if (number[gridBoundaryBytes - 1] >> 7) {
       for (unsigned i = gridBoundaryBytes; i < sizeof(hrleIndexType); ++i)
-        number[i] = 0xFF;
+        number[i] = static_cast<char>(0xFF);
     }
     return *reinterpret_cast<hrleIndexType *>(number);
   }
